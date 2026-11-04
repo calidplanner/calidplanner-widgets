@@ -14,7 +14,7 @@
   body.night{--bg:#2B2622;--card:#3A332D;--ink:#F4ECDF;--muted:#BFAE98;--gold:#D8B97E;--line:#54493F}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{background:transparent;color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  body{background:transparent;color:var(--ink);font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;align-items:center;justify-content:center;overflow:hidden}
   .card{width:min(94vw,640px);height:min(94vh,420px);background:var(--card);border-radius:min(4vw,24px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(2vh,12px);padding:min(5vw,32px);text-align:center;position:relative}
   .card::before{content:"";position:absolute;inset:min(1.6vw,10px);border:1px solid var(--line);border-radius:min(3vw,16px);pointer-events:none}
   .names{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(16px,min(5vw,7vh),30px);color:var(--ink)}
