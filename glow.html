@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glow Challenge · CalidPlanner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{--card:#F6E4E0;--ink:#5A4440;--muted:#A88880;--ring:#E8A7B5;--track:#EBD3CA;--line:#EBCFCB}
+  body.lilac{--card:#ECE7F2;--ink:#4D4458;--muted:#958AA3;--ring:#B9A9D3;--track:#DCD4E8;--line:#DDD5E7}
+  body.ivory{--card:#F4ECDF;--ink:#4A3F35;--muted:#9C8B78;--ring:#C9A96E;--track:#E6DACA;--line:#E2D6C6}
+  body.night{--card:#3A332D;--ink:#F4ECDF;--muted:#BFAE98;--ring:#E8A7B5;--track:#54493F;--line:#54493F}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:transparent;color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;align-items:center;justify-content:center;overflow:hidden;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+  .card{width:calc(100vw - 8px);height:calc(100vh - 8px);max-width:640px;max-height:460px;background:var(--card);border-radius:min(6vw,22px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(2vh,10px);padding:min(5vw,24px);text-align:center;position:relative}
+  .card::before{content:"";position:absolute;inset:min(2vw,9px);border:1px solid var(--line);border-radius:min(4.5vw,15px);pointer-events:none}
+  .title{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(15px,min(7vw,6.5vh),26px)}
+  .ringwrap{position:relative;width:min(62vw,58vh,240px);aspect-ratio:1}
+  .ringwrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .day{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(28px,min(17vw,16vh),76px);line-height:1}
+  .of{font-size:clamp(9px,min(3.4vw,3.2vh),13px);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:.3em}
+  .left{font-size:clamp(10px,min(3.8vw,3.6vh),15px);letter-spacing:.08em;color:var(--muted)}
+  .left b{font-weight:400;color:var(--ink)}
+  circle.p{transition:stroke-dashoffset 1.2s ease}
+  @media (max-height:230px){.title{display:none}}
+</style>
+</head>
+<body>
+<main class="card">
+  <p class="title" id="title">My Winter Arc</p>
+  <div class="ringwrap">
+    <svg viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="var(--track)" stroke-width="7"></circle>
+      <circle class="p" id="p" cx="60" cy="60" r="52" fill="none" stroke="var(--ring)" stroke-width="7" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73"></circle>
+    </svg>
+    <div class="center"><p class="day" id="day">1</p><p class="of" id="of">of 75</p></div>
+  </div>
+  <p class="left" id="left"></p>
+</main>
+<script>
+  var q=new URLSearchParams(location.search);
+  var th=(q.get('theme')||'pink').toLowerCase(); if(['lilac','ivory','night'].indexOf(th)>-1) document.body.className=th;
+  var lang=q.get('lang')==='es'?'es':'en';
+  var T={en:{day:'day',of:'of',left:'days to go',leftOne:'day to go',starts:'starts in',sdays:'days',sday:'day',done:'challenge complete',doneTop:'you did it ✨'},
+         es:{day:'día',of:'de',left:'días por delante',leftOne:'día por delante',starts:'empieza en',sdays:'días',sday:'día',done:'reto completado',doneTop:'¡lo lograste! ✨'}}[lang];
+  var t=q.get('title'); document.getElementById('title').textContent = t!==null ? t : 'My Winter Arc'; if(t==='') document.getElementById('title').style.display='none';
+  var len=Math.max(1,parseInt(q.get('length')||'75',10));
+  var s=(q.get('start')||'2026-10-20').split('-').map(Number), start=new Date(s[0],(s[1]||1)-1,s[2]||1);
+  function render(){
+    var now=new Date(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var diff=Math.round((today-start)/86400000), day=diff+1, C=326.73, p=document.getElementById('p');
+    var dayEl=document.getElementById('day'), of=document.getElementById('of'), left=document.getElementById('left');
+    if(day<1){var n=-diff; dayEl.textContent=n; of.textContent=n===1?T.sday:T.sdays; left.innerHTML=T.starts+' <b>'+n+' '+(n===1?T.sday:T.sdays)+'</b>'; p.style.strokeDashoffset=C;}
+    else if(day>len){dayEl.textContent='✓'; of.textContent=T.done; left.innerHTML='<b>'+len+'</b> / '+len+' · '+T.doneTop; p.style.strokeDashoffset=0;}
+    else {dayEl.textContent=day; of.textContent=T.of+' '+len; var r=len-day; left.innerHTML='<b>'+r+'</b> '+(r===1?T.leftOne:T.left); p.style.strokeDashoffset=C*(1-day/len);}
+  }
+  render(); setInterval(render,60000);
+</script>
+</body>
+</html>
