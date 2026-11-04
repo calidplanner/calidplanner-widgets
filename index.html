@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wedding Countdown · CalidPlanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FBF7F0;--card:#F4ECDF;--ink:#4A3F35;--muted:#9C8B78;--gold:#C9A96E;--line:#E2D6C6}
+  body.blush{--bg:#FBF3F1;--card:#F3E2DD;--ink:#5A4440;--muted:#A88880;--gold:#C9A96E;--line:#EAD6D0}
+  body.sage{--bg:#F6F7F1;--card:#E6EADB;--ink:#3F4637;--muted:#8A9480;--gold:#B79A63;--line:#D9DECD}
+  body.night{--bg:#2B2622;--card:#3A332D;--ink:#F4ECDF;--muted:#BFAE98;--gold:#D8B97E;--line:#54493F}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:transparent;color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .card{width:min(94vw,640px);height:min(94vh,420px);background:var(--card);border-radius:min(4vw,24px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(2vh,12px);padding:min(5vw,32px);text-align:center;position:relative}
+  .card::before{content:"";position:absolute;inset:min(1.6vw,10px);border:1px solid var(--line);border-radius:min(3vw,16px);pointer-events:none}
+  .names{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(16px,min(5vw,7vh),30px);color:var(--ink)}
+  .rings{width:clamp(26px,min(8vw,10vh),44px);height:auto}
+  .big{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(48px,min(22vw,30vh),132px);line-height:.9;letter-spacing:-.01em}
+  .label{font-size:clamp(10px,min(3vw,3.6vh),15px);letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
+  .rule{width:min(30vw,120px);height:1px;background:var(--gold);opacity:.8}
+  .small{display:flex;gap:min(5vw,28px);font-size:clamp(10px,min(3vw,3.4vh),14px);color:var(--muted);letter-spacing:.08em}
+  .small b{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(16px,min(5vw,6vh),26px);color:var(--ink);letter-spacing:0}
+  .date{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(13px,min(3.6vw,4.5vh),19px);color:var(--muted)}
+  @media (max-height:260px){.small,.rings{display:none}}
+</style>
+</head>
+<body>
+<main class="card" aria-live="polite">
+  <svg class="rings" viewBox="0 0 64 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--gold)"><circle cx="24" cy="22" r="14"></circle><circle cx="40" cy="22" r="14"></circle></g><path d="M24 8 l-4 -5 h8 z" fill="currentColor" style="color:var(--gold)"></path></svg>
+  <p class="names" id="names">Emma &amp; Jake</p>
+  <p class="big" id="days">–</p>
+  <p class="label" id="label">days until we say I do</p>
+  <div class="rule"></div>
+  <div class="small" id="small"><span><b id="h">0</b>hours</span><span><b id="m">0</b>minutes</span><span><b id="s">0</b>seconds</span></div>
+  <p class="date" id="date"></p>
+</main>
+<script>
+  var q=new URLSearchParams(location.search);
+  var theme=(q.get('theme')||'ivory').toLowerCase();
+  if(['blush','sage','night'].indexOf(theme)>-1) document.body.className=theme;
+  var names=q.get('names'); document.getElementById('names').textContent = names!==null ? names : 'Emma & Jake';
+  if(names==='') document.getElementById('names').style.display='none';
+  var d=(q.get('date')||'2027-09-18').split('-').map(Number);
+  var t=(q.get('time')||'16:00').split(':').map(Number);
+  var target=new Date(d[0],(d[1]||1)-1,d[2]||1,t[0]||0,t[1]||0,0);
+  var lang=q.get('lang')==='es'?'es':'en';
+  var T={en:{until:'days until we say I do',one:'day until we say I do',today:'today we say I do',married:'just married',h:'hours',m:'minutes',s:'seconds'},
+         es:{until:'días para el sí, quiero',one:'día para el sí, quiero',today:'hoy es el gran día',married:'recién casados',h:'horas',m:'minutos',s:'segundos'}}[lang];
+  var sm=document.querySelectorAll('#small span');
+  sm[0].lastChild.textContent=T.h; sm[1].lastChild.textContent=T.m; sm[2].lastChild.textContent=T.s;
+  document.getElementById('date').textContent=target.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  function tick(){
+    var now=new Date(), ms=target-now;
+    var startToday=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    var startTarget=new Date(target.getFullYear(),target.getMonth(),target.getDate());
+    var dayDiff=Math.round((startTarget-startToday)/86400000);
+    var days=document.getElementById('days'), label=document.getElementById('label'), small=document.getElementById('small');
+    if(dayDiff>0){days.textContent=dayDiff; label.textContent=dayDiff===1?T.one:T.until; small.style.visibility='visible';
+      var totalS=Math.max(0,Math.floor(ms/1000)); document.getElementById('h').textContent=Math.floor(totalS/3600)%24; document.getElementById('m').textContent=Math.floor(totalS/60)%60; document.getElementById('s').textContent=totalS%60;}
+    else if(dayDiff===0){days.textContent='♡'; label.textContent=T.today; small.style.visibility='hidden';}
+    else {days.textContent='♡'; label.textContent=T.married; small.style.visibility='hidden';}
+  }
+  tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>
