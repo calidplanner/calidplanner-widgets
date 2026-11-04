@@ -11,7 +11,7 @@
   body.ivory{--card:#F4ECDF;--ink:#4A3F35;--muted:#9C8B78;--ring:#C9A96E;--track:#E6DACA;--line:#E2D6C6}
   body.night{--card:#3A332D;--ink:#F4ECDF;--muted:#BFAE98;--ring:#E8A7B5;--track:#54493F;--line:#54493F}
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
+  html,body{height:100%;overflow:hidden}
   body{background:transparent;color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;align-items:center;justify-content:center;overflow:hidden;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
   .card{width:calc(100vw - 8px);height:calc(100vh - 8px);max-width:640px;max-height:460px;background:var(--card);border-radius:min(6vw,22px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(2vh,10px);padding:min(5vw,24px);text-align:center;position:relative}
   .card::before{content:"";position:absolute;inset:min(2vw,9px);border:1px solid var(--line);border-radius:min(4.5vw,15px);pointer-events:none}
@@ -41,6 +41,7 @@
 </main>
 <script>
   var q=new URLSearchParams(location.search);
+  var bg=(q.get('bg')||'').replace(/[^0-9a-fA-F]/g,''); if(bg.length===6||bg.length===3) document.body.style.background='#'+bg;
   var th=(q.get('theme')||'pink').toLowerCase(); if(['lilac','ivory','night'].indexOf(th)>-1) document.body.className=th;
   var lang=q.get('lang')==='es'?'es':'en';
   var T={en:{day:'day',of:'of',left:'days to go',leftOne:'day to go',starts:'starts in',sdays:'days',sday:'day',done:'challenge complete',doneTop:'you did it ✨'},
