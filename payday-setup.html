@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your payday countdown · CalidPlanner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FBF7F0;--card:#FFFFFF;--ink:#4A3F35;--muted:#7D6E5E;--gold:#A8874E;--line:#E2D6C6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;padding:32px 16px}
+  .wrap{max-width:880px;margin:0 auto;display:grid;gap:24px;grid-template-columns:1fr 1fr}
+  @media (max-width:760px){.wrap{grid-template-columns:1fr}}
+  h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:40px;margin:0 0 4px;grid-column:1/-1}
+  .sub{grid-column:1/-1;margin:-12px 0 0;color:var(--muted)}
+  form,.out{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px}
+  label{font-size:13px;font-weight:500;letter-spacing:.04em;display:flex;flex-direction:column;gap:6px}
+  input,select{font:inherit;font-weight:400;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#FFFDF9;color:var(--ink);min-height:44px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  iframe{width:100%;height:300px;border:0;border-radius:12px;background:var(--bg)}
+  .link{font-size:13px;word-break:break-all;background:#FFFDF9;border:1px dashed var(--line);border-radius:10px;padding:10px 12px}
+  button{font:inherit;font-weight:500;min-height:44px;border:0;border-radius:10px;background:var(--gold);color:#fff;cursor:pointer}
+  button:hover{filter:brightness(.95)}
+  ol{margin:0;padding-left:20px;color:var(--muted);font-size:14px;line-height:1.7}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Your payday countdown</h1>
+  <p class="sub">Always know how many days until your next paycheck. It moves forward by itself.</p>
+  <form id="f" onsubmit="return false">
+    <label for="type">How often do you get paid?
+      <select id="type"><option value="monthly">Once a month</option><option value="semimonthly">Twice a month (e.g. 1st &amp; 15th)</option><option value="biweekly">Every two weeks</option></select>
+    </label>
+    <div id="g-monthly"><label for="day">Payday<select id="day"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25" selected>25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="last">Last day of the month</option></select></label></div>
+    <div class="row" id="g-semi" hidden><label for="d1">First payday<select id="d1"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></label><label for="d2">Second payday<select id="d2"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15" selected>15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="last">Last day of the month</option></select></label></div>
+    <div id="g-bi" hidden><label for="anchor">Your last or next payday<input id="anchor" type="date" value="2026-11-06"></label></div>
+    <label for="weekend">If payday falls on a weekend
+      <select id="weekend"><option value="prev">Paid the Friday before</option><option value="next">Paid the Monday after</option><option value="none">No change</option></select>
+    </label>
+    <div class="row">
+      <label for="theme">Style
+        <select id="theme"><option value="sage">Sage (Money)</option><option value="ivory">Ivory &amp; gold</option><option value="pink">Pink</option><option value="rose">Rose</option><option value="night">Night</option></select>
+      </label>
+      <label for="lang">Language
+        <select id="lang"><option value="en">English</option><option value="es">Español</option></select>
+      </label>
+    </div>
+    <div class="row">
+      <label for="frame">Shape
+        <select id="frame"><option value="card">Card</option><option value="arch">Arch</option></select>
+      </label>
+      <label for="bg">Background behind it
+        <select id="bg"><option value="FFFFFF">Notion page (white)</option><option value="F4EEEE">Notion beige box</option><option value="F9F2F5">Notion pink box</option><option value="191919">Notion dark mode</option></select>
+      </label>
+    </div>
+    <ol>
+      <li>Click <b>Copy my link</b>.</li>
+      <li>In Notion, type <b>/embed</b>, paste the link and press <b>Embed link</b>.</li>
+      <li>Drag the corners to resize it.</li>
+    </ol>
+  </form>
+  <div class="out">
+    <iframe id="pv" title="Preview"></iframe>
+    <div class="link" id="link"></div>
+    <button type="button" id="copy">Copy my link</button>
+  </div>
+</div>
+<script>
+  var base=location.href.replace(/[?#].*$/,'').replace(/[^\/]*$/,'');
+  var els=['type','day','d1','d2','anchor','weekend','theme','lang','frame','bg'].map(function(i){return document.getElementById(i)});
+  function url(){var p=new URLSearchParams();els.forEach(function(e){if(!e.closest('[hidden]'))p.set(e.id,e.value)});return base+'payday.html?'+p.toString();}
+  window.vis=function(){var t=document.getElementById('type').value;document.getElementById('g-monthly').hidden=t!=='monthly';document.getElementById('g-semi').hidden=t!=='semimonthly';document.getElementById('g-bi').hidden=t!=='biweekly';};
+  var timer;function upd(){if(window.vis)vis();var u=url();document.getElementById('link').textContent=u;clearTimeout(timer);timer=setTimeout(function(){document.getElementById('pv').src=u},250);}
+  els.forEach(function(e){e.addEventListener('input',upd)});upd();
+  document.getElementById('copy').addEventListener('click',function(){var b=this;var u=url();
+    (navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){b.textContent='Copied ✓';setTimeout(function(){b.textContent='Copy my link'},1800)}).catch(function(){window.prompt('Copy your link:',u)});});
+</script>
+</body>
+</html>

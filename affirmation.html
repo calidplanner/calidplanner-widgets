@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Affirmation · CalidPlanner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{--card:#F6E4E0;--ink:#5A4440;--muted:#A88880;--accent:#E8A7B5;--line:#EBCFCB}
+  body.lilac{--card:#ECE7F2;--ink:#4D4458;--muted:#958AA3;--accent:#B9A9D3;--line:#DDD5E7}
+  body.rose{--card:#EBD3CA;--ink:#3B322C;--muted:#7A5F57;--accent:#CF968A;--line:transparent}
+  body.sage{--card:#E6EADB;--ink:#3F4637;--muted:#7F8A74;--accent:#A3B18A;--line:#D9DECD}
+  body.ivory{--card:#F4ECDF;--ink:#4A3F35;--muted:#9C8B78;--accent:#C9A96E;--line:#E2D6C6}
+  body.night{--card:#3A332D;--ink:#F4ECDF;--muted:#BFAE98;--accent:#E8A7B5;--line:#54493F}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{background:transparent;color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;display:flex;align-items:center;justify-content:center}
+  .card{width:calc(100vw - 8px);height:calc(100vh - 8px);max-width:680px;max-height:420px;background:var(--card);border-radius:min(6vw,22px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:min(2.6vh,14px);padding:min(7vw,36px);text-align:center;position:relative}
+  .card::before{content:"";position:absolute;inset:min(2vw,9px);border:1px solid var(--line);border-radius:min(4.5vw,15px);pointer-events:none}
+  .card.arch{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:50vw 50vw 0 0;justify-content:flex-end;padding:0 9vw 13vh}
+  .card.arch::before{display:none}
+  .label{font-size:clamp(9px,min(3.2vw,3.4vh),12px);letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .spark{width:clamp(14px,min(6vw,6vh),24px);color:var(--accent)}
+  .quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(17px,min(7.4vw,8.6vh),38px);line-height:1.22;max-width:22ch;text-wrap:balance}
+  .rule{width:min(24vw,70px);height:1px;background:var(--accent)}
+  .date{font-size:clamp(9px,min(3.2vw,3.4vh),12px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="card" id="card">
+  <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 Q12 12 23 12 Q12 12 12 23 Q12 12 1 12 Q12 12 12 1 Z" fill="currentColor"></path></svg>
+  <p class="label" id="label">today's affirmation</p>
+  <p class="quote" id="quote"></p>
+  <div class="rule"></div>
+  <p class="date" id="date"></p>
+</main>
+<script>
+  var A={"en": ["I am becoming the woman I always wanted to be.", "I keep the promises I make to myself.", "Soft and disciplined can live in the same girl.", "I am allowed to take up space.", "My glow up starts from the inside.", "I choose peace over perfection.", "Every small step counts, and I am taking them.", "I am worthy of the life I'm building.", "Rest is productive too.", "I trust the timing of my life.", "I radiate calm, confidence and kindness.", "I am proud of how far I've come.", "My body deserves love, not punishment.", "I attract what I am ready to become.", "Today I choose to be gentle with myself.", "I am the main character of my story.", "Consistency is my love language to myself.", "I don't chase, I attract.", "I am grounded, glowing and grateful.", "My future self is thanking me right now.", "I give myself permission to bloom slowly.", "I am safe to be exactly who I am.", "Good things are coming to me with ease.", "I let go of what I can't control.", "I am building a life I don't need a vacation from.", "My energy is precious and I protect it.", "I am magnetic in the softest way.", "I can do hard things, beautifully.", "I celebrate my wins, big and small.", "I am enough, exactly as I am today.", "I choose habits that love me back.", "My confidence grows every time I show up.", "I deserve the same kindness I give others.", "I am open to new beginnings.", "I romanticize my life, one moment at a time.", "My mind is calm, my heart is open.", "I am becoming her, day by day.", "Progress, not perfection.", "I honor my needs without guilt.", "I am glowing in my own season.", "I choose joy, even in the little things.", "I am worthy of rest, love and abundance.", "My boundaries are an act of self-love.", "I trust myself to figure it out.", "I am grateful for this body and all it does.", "Today is a fresh page, and I write it.", "I am patient with my growth.", "Beautiful things happen when I believe in myself.", "I am my own safe place.", "I glow differently when I'm at peace.", "I release comparison and embrace my path.", "I am disciplined because I love myself.", "My dreams are valid and within reach.", "I fill my cup first, without apology.", "I am soft, strong and unstoppable.", "Every day I become a little more me.", "I deserve a life that feels good on the inside.", "I welcome abundance in every form.", "I show up for myself, even on slow days.", "I am exactly where I need to be."], "es": ["Me estoy convirtiendo en la mujer que siempre quise ser.", "Cumplo las promesas que me hago a mí misma.", "Puedo ser suave y disciplinada a la vez.", "Tengo derecho a ocupar mi espacio.", "Mi glow up empieza por dentro.", "Elijo la paz antes que la perfección.", "Cada pequeño paso cuenta, y lo estoy dando.", "Merezco la vida que estoy construyendo.", "Descansar también es avanzar.", "Confío en los tiempos de mi vida.", "Irradio calma, confianza y amabilidad.", "Estoy orgullosa de todo lo que he avanzado.", "Mi cuerpo merece amor, no castigo.", "Atraigo aquello en lo que estoy lista para convertirme.", "Hoy elijo tratarme con cariño.", "Soy la protagonista de mi historia.", "La constancia es mi forma de quererme.", "No persigo, atraigo.", "Estoy centrada, radiante y agradecida.", "Mi yo del futuro me está dando las gracias.", "Me permito florecer a mi ritmo.", "Puedo ser exactamente quien soy.", "Las cosas buenas llegan a mí con facilidad.", "Suelto lo que no puedo controlar.", "Construyo una vida de la que no necesito escapar.", "Mi energía es valiosa y la protejo.", "Soy magnética de la forma más suave.", "Puedo hacer cosas difíciles, y hacerlas bonitas.", "Celebro mis logros, grandes y pequeños.", "Soy suficiente, tal y como soy hoy.", "Elijo hábitos que me cuidan.", "Mi confianza crece cada vez que me presento.", "Merezco la misma amabilidad que doy.", "Estoy abierta a nuevos comienzos.", "Romantizo mi vida, momento a momento.", "Mi mente está en calma, mi corazón abierto.", "Me estoy convirtiendo en ella, día a día.", "Progreso, no perfección.", "Atiendo mis necesidades sin culpa.", "Brillo en mi propia estación.", "Elijo la alegría, incluso en lo pequeño.", "Merezco descanso, amor y abundancia.", "Mis límites son un acto de amor propio.", "Confío en que sabré resolverlo.", "Agradezco este cuerpo y todo lo que hace.", "Hoy es una página en blanco, y la escribo yo.", "Soy paciente con mi crecimiento.", "Pasan cosas bonitas cuando creo en mí.", "Soy mi propio lugar seguro.", "Brillo distinto cuando estoy en paz.", "Suelto las comparaciones y abrazo mi camino.", "Soy disciplinada porque me quiero.", "Mis sueños son válidos y están a mi alcance.", "Primero lleno mi taza, sin pedir perdón.", "Soy suave, fuerte e imparable.", "Cada día soy un poco más yo.", "Merezco una vida que se sienta bien por dentro.", "Doy la bienvenida a la abundancia en todas sus formas.", "Me presento para mí, incluso en los días lentos.", "Estoy exactamente donde necesito estar."]};
+  var q=new URLSearchParams(location.search);
+  var th=(q.get('theme')||'pink').toLowerCase(); if(['lilac','rose','sage','ivory','night'].indexOf(th)>-1) document.body.className=th;
+  var bg=(q.get('bg')||'').replace(/[^0-9a-fA-F]/g,''); if(bg.length===6||bg.length===3) document.body.style.background='#'+bg;
+  if(q.get('frame')==='arch') document.getElementById('card').classList.add('arch');
+  var lang=q.get('lang')==='es'?'es':'en';
+  document.getElementById('label').textContent= lang==='es' ? 'afirmación de hoy' : "today's affirmation";
+  function render(){
+    var d=new Date(), start=new Date(d.getFullYear(),0,0), doy=Math.floor((d-start)/86400000);
+    var list=A[lang], i=(doy + d.getFullYear()*7) % list.length;
+    document.getElementById('quote').textContent=list[i];
+    document.getElementById('date').textContent=d.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:'long',month:'long',day:'numeric'});
+  }
+  render();
+  var now=new Date(), ms=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now+1000; setTimeout(function(){render();setInterval(render,86400000)},ms);
+</script>
+</body>
+</html>
