@@ -23,7 +23,7 @@
   .sub{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(14px,min(5.4vw,6vh),24px)}
   .bar{width:min(70vw,260px);height:6px;border-radius:3px;background:var(--track);overflow:hidden;margin-top:min(1vh,6px)}
   .fill{height:100%;background:var(--accent);border-radius:3px;width:0;transition:width 1s ease}
-  .date{font-size:clamp(9px,min(3.2vw,3.4vh),12px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .date{white-space:nowrap;font-size:clamp(9px,min(3.2vw,3.4vh),12px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
   .coin{width:clamp(18px,min(7vw,7vh),30px);color:var(--gold)}
 </style>
 </head>
@@ -59,7 +59,7 @@
     var diff=Math.round((next-today)/86400000), big=document.getElementById('big'), sub=document.getElementById('sub');
     if(diff===0){big.textContent=T.todayBig;sub.textContent=T.today;document.getElementById('fill').style.width='100%';}
     else{big.textContent=diff;sub.textContent=diff===1?T.day:T.days;var span=Math.round((next-prev)/86400000)||1;document.getElementById('fill').style.width=Math.max(4,Math.round((span-diff)/span*100))+'%';}
-    document.getElementById('date').textContent=next.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:'long',month:'long',day:'numeric'});
+    document.getElementById('date').textContent=next.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:(innerWidth<300?'short':'long'),month:(innerWidth<300?'short':'long'),day:'numeric'});
   }
   render(); setInterval(render,3600000);
 </script>

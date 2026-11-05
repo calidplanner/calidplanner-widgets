@@ -21,7 +21,7 @@
   .time{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(40px,min(26vw,26vh),120px);line-height:1;letter-spacing:-.01em;display:flex;align-items:baseline;gap:.12em}
   .ampm{font-family:'Jost',sans-serif;font-size:.2em;letter-spacing:.2em;color:var(--muted)}
   .rule{width:min(30vw,90px);height:1px;background:var(--accent)}
-  .date{font-size:clamp(10px,min(4vw,3.8vh),15px);letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .date{white-space:nowrap;font-size:clamp(10px,min(4vw,3.8vh),15px);letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
     .card.arch{width:100vw;height:100vh;max-width:none;max-height:none;border-radius:50vw 50vw 0 0;justify-content:flex-end;padding:0 8vw 14vh}
   .card.arch::before{display:none}
   .card.arch .time{font-size:clamp(36px,min(24vw,22vh),110px)}
@@ -53,7 +53,7 @@
     document.getElementById('icon').innerHTML=(i<2)?SUN:MOON;
     if(h24){document.getElementById('time').textContent=pad(h)+':'+pad(m);document.getElementById('ampm').textContent='';}
     else{document.getElementById('time').textContent=((h%12)||12)+':'+pad(m);document.getElementById('ampm').textContent=h<12?'AM':'PM';}
-    document.getElementById('date').textContent=d.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:'long',month:'long',day:'numeric'});
+    document.getElementById('date').textContent=d.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:(innerWidth<300?'short':'long'),month:(innerWidth<300?'short':'long'),day:'numeric'});
   }
   tick(); setInterval(tick,1000);
 </script>

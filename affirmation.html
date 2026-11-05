@@ -24,7 +24,7 @@
   .quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(17px,min(7.4vw,8.6vh),38px);line-height:1.22;max-width:22ch;text-wrap:balance}
   @media (min-aspect-ratio:5/2){.quote{max-width:40ch;font-size:clamp(17px,13vh,40px)}.label,.date{font-size:clamp(9px,5vh,13px)}}
   .rule{width:min(24vw,70px);height:1px;background:var(--accent)}
-  .date{font-size:clamp(9px,min(3.2vw,3.4vh),12px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .date{white-space:nowrap;font-size:clamp(9px,min(3.2vw,3.4vh),12px);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -47,7 +47,7 @@
     var d=new Date(), start=new Date(d.getFullYear(),0,0), doy=Math.floor((d-start)/86400000);
     var list=A[lang], i=(doy + d.getFullYear()*7) % list.length;
     document.getElementById('quote').textContent=list[i];
-    document.getElementById('date').textContent=d.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:'long',month:'long',day:'numeric'});
+    document.getElementById('date').textContent=d.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:(innerWidth<300?'short':'long'),month:(innerWidth<300?'short':'long'),day:'numeric'});
   }
   render();
   var now=new Date(), ms=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now+1000; setTimeout(function(){render();setInterval(render,86400000)},ms);

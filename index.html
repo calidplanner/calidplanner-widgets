@@ -24,7 +24,7 @@
   .rule{width:min(30vw,120px);height:1px;background:var(--gold);opacity:.8}
   .small{display:flex;gap:min(5vw,28px);font-size:clamp(10px,min(3vw,3.4vh),14px);color:var(--muted);letter-spacing:.08em}
   .small b{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(16px,min(5vw,6vh),26px);color:var(--ink);letter-spacing:0}
-  .date{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(13px,min(3.6vw,4.5vh),19px);color:var(--muted)}
+  .date{white-space:nowrap;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(13px,min(3.6vw,4.5vh),19px);color:var(--muted)}
   @media (max-height:260px){.small,.rings{display:none}}
 </style>
 </head>
@@ -53,7 +53,7 @@
          es:{until:'días para el sí, quiero',one:'día para el sí, quiero',today:'hoy es el gran día',married:'recién casados',h:'horas',m:'minutos',s:'segundos'}}[lang];
   var sm=document.querySelectorAll('#small span');
   sm[0].lastChild.textContent=T.h; sm[1].lastChild.textContent=T.m; sm[2].lastChild.textContent=T.s;
-  document.getElementById('date').textContent=target.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('date').textContent=target.toLocaleDateString(lang==='es'?'es-ES':'en-US',{weekday:(innerWidth<340?'short':'long'),year:'numeric',month:(innerWidth<340?'short':'long'),day:'numeric'});
   function tick(){
     var now=new Date(), ms=target-now;
     var startToday=new Date(now.getFullYear(),now.getMonth(),now.getDate());
