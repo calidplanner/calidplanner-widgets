@@ -23,12 +23,31 @@
   .of{font-size:clamp(9px,min(3.4vw,3.2vh),13px);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:.3em}
   .left{font-size:clamp(10px,min(3.8vw,3.6vh),15px);letter-spacing:.08em;color:var(--muted)}
   .left b{font-weight:400;color:var(--ink)}
+  .card{max-width:none;max-height:none}
+  .aff{display:none}
+  body.duo .card{flex-direction:column;gap:min(2.2vh,12px)}
+  body.duo .ringside{display:flex;flex-direction:column;align-items:center;gap:min(1.6vh,8px)}
+  body.duo .ringwrap{width:min(34vh,44vw,200px)}
+  body.duo .day{font-size:clamp(24px,min(11vw,10vh),58px)}
+  body.duo .aff{display:flex;flex-direction:column;align-items:center;gap:min(1.4vh,8px);padding-top:min(2.2vh,12px);border-top:1px solid var(--line);width:min(86%,420px)}
+  .alabel{font-size:clamp(8px,min(2.6vw,2.6vh),11px);letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .spark{width:12px;height:12px;color:var(--ring)}
+  .quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(15px,min(5.4vw,5.2vh),28px);line-height:1.22;text-wrap:balance}
+  @media (min-aspect-ratio:6/5){
+    body.duo .card{flex-direction:row;gap:0;padding:min(4vh,28px) min(5vw,40px)}
+    body.duo .ringside{flex:0 0 46%}
+    body.duo .ringwrap{width:min(56vh,30vw,230px)}
+    body.duo .day{font-size:clamp(26px,min(8vw,15vh),70px)}
+    body.duo .aff{flex:1;border-top:0;border-left:1px solid var(--line);padding:0 0 0 min(4vw,32px);width:auto;align-self:stretch;justify-content:center}
+    .quote{font-size:clamp(17px,min(4.6vw,9vh),34px)}
+  }
   circle.p{transition:stroke-dashoffset 1.2s ease}
   @media (max-height:230px){.title{display:none}}
 </style>
 </head>
 <body>
 <main class="card">
+  <div class="ringside">
   <p class="title" id="title">My Winter Arc</p>
   <div class="ringwrap">
     <svg viewBox="0 0 120 120" aria-hidden="true">
@@ -38,6 +57,12 @@
     <div class="center"><p class="day" id="day">1</p><p class="of" id="of">of 75</p></div>
   </div>
   <p class="left" id="left"></p>
+  </div>
+  <div class="aff">
+    <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+    <p class="alabel" id="alabel">today's affirmation</p>
+    <p class="quote" id="quote"></p>
+  </div>
 </main>
 <script>
   var q=new URLSearchParams(location.search);
@@ -57,6 +82,11 @@
     else if(day>len){dayEl.textContent='✓'; of.textContent=T.done; left.innerHTML='<b>'+len+'</b> / '+len+' · '+T.doneTop; p.style.strokeDashoffset=0;}
     else {dayEl.textContent=day; of.textContent=T.of+' '+len; var r=len-day; left.innerHTML='<b>'+r+'</b> '+(r===1?T.leftOne:T.left); p.style.strokeDashoffset=C*(1-day/len);}
   }
+  var A={"en": ["I am becoming the woman I always wanted to be.", "I keep the promises I make to myself.", "Soft and disciplined can live in the same girl.", "I am allowed to take up space.", "My glow up starts from the inside.", "I choose peace over perfection.", "Every small step counts, and I am taking them.", "I am worthy of the life I'm building.", "Rest is productive too.", "I trust the timing of my life.", "I radiate calm, confidence and kindness.", "I am proud of how far I've come.", "My body deserves love, not punishment.", "I attract what I am ready to become.", "Today I choose to be gentle with myself.", "I am the main character of my story.", "Consistency is my love language to myself.", "I don't chase, I attract.", "I am grounded, glowing and grateful.", "My future self is thanking me right now.", "I give myself permission to bloom slowly.", "I am safe to be exactly who I am.", "Good things are coming to me with ease.", "I let go of what I can't control.", "I am building a life I don't need a vacation from.", "My energy is precious and I protect it.", "I am magnetic in the softest way.", "I can do hard things, beautifully.", "I celebrate my wins, big and small.", "I am enough, exactly as I am today.", "I choose habits that love me back.", "My confidence grows every time I show up.", "I deserve the same kindness I give others.", "I am open to new beginnings.", "I romanticize my life, one moment at a time.", "My mind is calm, my heart is open.", "I am becoming her, day by day.", "Progress, not perfection.", "I honor my needs without guilt.", "I am glowing in my own season.", "I choose joy, even in the little things.", "I am worthy of rest, love and abundance.", "My boundaries are an act of self-love.", "I trust myself to figure it out.", "I am grateful for this body and all it does.", "Today is a fresh page, and I write it.", "I am patient with my growth.", "Beautiful things happen when I believe in myself.", "I am my own safe place.", "I glow differently when I'm at peace.", "I release comparison and embrace my path.", "I am disciplined because I love myself.", "My dreams are valid and within reach.", "I fill my cup first, without apology.", "I am soft, strong and unstoppable.", "Every day I become a little more me.", "I deserve a life that feels good on the inside.", "I welcome abundance in every form.", "I show up for myself, even on slow days.", "I am exactly where I need to be."], "es": ["Me estoy convirtiendo en la mujer que siempre quise ser.", "Cumplo las promesas que me hago a mí misma.", "Puedo ser suave y disciplinada a la vez.", "Tengo derecho a ocupar mi espacio.", "Mi glow up empieza por dentro.", "Elijo la paz antes que la perfección.", "Cada pequeño paso cuenta, y lo estoy dando.", "Merezco la vida que estoy construyendo.", "Descansar también es avanzar.", "Confío en los tiempos de mi vida.", "Irradio calma, confianza y amabilidad.", "Estoy orgullosa de todo lo que he avanzado.", "Mi cuerpo merece amor, no castigo.", "Atraigo aquello en lo que estoy lista para convertirme.", "Hoy elijo tratarme con cariño.", "Soy la protagonista de mi historia.", "La constancia es mi forma de quererme.", "No persigo, atraigo.", "Estoy centrada, radiante y agradecida.", "Mi yo del futuro me está dando las gracias.", "Me permito florecer a mi ritmo.", "Puedo ser exactamente quien soy.", "Las cosas buenas llegan a mí con facilidad.", "Suelto lo que no puedo controlar.", "Construyo una vida de la que no necesito escapar.", "Mi energía es valiosa y la protejo.", "Soy magnética de la forma más suave.", "Puedo hacer cosas difíciles, y hacerlas bonitas.", "Celebro mis logros, grandes y pequeños.", "Soy suficiente, tal y como soy hoy.", "Elijo hábitos que me cuidan.", "Mi confianza crece cada vez que me presento.", "Merezco la misma amabilidad que doy.", "Estoy abierta a nuevos comienzos.", "Romantizo mi vida, momento a momento.", "Mi mente está en calma, mi corazón abierto.", "Me estoy convirtiendo en ella, día a día.", "Progreso, no perfección.", "Atiendo mis necesidades sin culpa.", "Brillo en mi propia estación.", "Elijo la alegría, incluso en lo pequeño.", "Merezco descanso, amor y abundancia.", "Mis límites son un acto de amor propio.", "Confío en que sabré resolverlo.", "Agradezco este cuerpo y todo lo que hace.", "Hoy es una página en blanco, y la escribo yo.", "Soy paciente con mi crecimiento.", "Pasan cosas bonitas cuando creo en mí.", "Soy mi propio lugar seguro.", "Brillo distinto cuando estoy en paz.", "Suelto las comparaciones y abrazo mi camino.", "Soy disciplinada porque me quiero.", "Mis sueños son válidos y están a mi alcance.", "Primero lleno mi taza, sin pedir perdón.", "Soy suave, fuerte e imparable.", "Cada día soy un poco más yo.", "Merezco una vida que se sienta bien por dentro.", "Doy la bienvenida a la abundancia en todas sus formas.", "Me presento para mí, incluso en los días lentos.", "Estoy exactamente donde necesito estar."]};
+  if(q.get('affirm')==='1'){document.body.classList.add('duo');}
+  document.getElementById('alabel').textContent= lang==='es' ? 'afirmación de hoy' : "today's affirmation";
+  function aff(){var d=new Date(), st=new Date(d.getFullYear(),0,0), doy=Math.floor((d-st)/86400000); var list=A[lang]; document.getElementById('quote').textContent=list[(doy+d.getFullYear()*7)%list.length];}
+  aff(); setInterval(aff,60000);
   render(); setInterval(render,60000);
 </script>
 </body>

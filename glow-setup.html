@@ -44,9 +44,14 @@
         <select id="lang"><option value="en">English</option><option value="es">Español</option></select>
       </label>
     </div>
+    <div class="row">
+      <label for="affirm">Daily affirmation
+        <select id="affirm"><option value="1">Show it next to the ring</option><option value="0">Ring only</option></select>
+      </label>
       <label for="bg">Background behind it
         <select id="bg"><option value="FFFFFF">Notion page (white)</option><option value="F4EEEE">Notion beige box</option><option value="F9F2F5">Notion pink box</option><option value="191919">Notion dark mode</option></select>
       </label>
+    </div>
     <ol>
       <li>Click <b>Copy my link</b>.</li>
       <li>In Notion, type <b>/embed</b>, paste the link and press <b>Embed link</b>.</li>
@@ -61,7 +66,7 @@
 </div>
 <script>
   var base=location.href.replace(/[?#].*$/,'').replace(/[^\/]*$/,'');
-  var els=['title','start','length','theme','lang','bg'].map(function(i){return document.getElementById(i)});
+  var els=['title','start','length','theme','lang','affirm','bg'].map(function(i){return document.getElementById(i)});
   function url(){var p=new URLSearchParams();els.forEach(function(e){p.set(e.id,e.value)});return base+'glow.html?'+p.toString();}
   var timer;function upd(){var u=url();document.getElementById('link').textContent=u;clearTimeout(timer);timer=setTimeout(function(){document.getElementById('pv').src=u},250);}
   els.forEach(function(e){e.addEventListener('input',upd)});upd();
