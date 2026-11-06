@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soft Quote · CalidPlanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F4EEEE;--card:#EBD3CA;--arch:#F3E1DA;--accent:#C98A7E;--ink:#3B2F2B;--dot:#FFFFFF}
+  html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+  .wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:6px;box-sizing:border-box}
+  .card{position:relative;height:100%;max-width:100%;aspect-ratio:3/4;background:var(--card);border-radius:clamp(14px,6%,26px);
+        display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0;transition:opacity .6s ease}
+  .card.on{opacity:1}
+  @media (max-aspect-ratio:3/4){.card{height:auto;width:100%}}
+  .shape{position:absolute;left:12%;right:12%;top:9%;bottom:15%;background:var(--arch)}
+  .arch .shape{border-radius:999px 999px 18px 18px}
+  .oval .shape{border-radius:50%}
+  .window .shape{border-radius:999px 999px 999px 999px / 40% 40% 40% 40%;top:12%;bottom:12%}
+  .tall .shape{left:16%;right:16%;border-radius:999px}
+  .motif{position:absolute;left:50%;top:21%;width:13%;transform:translateX(-50%);color:var(--accent)}
+  .motif svg{display:block;width:100%;height:auto}
+  .quote{position:relative;z-index:1;margin:0;padding:0 18%;text-align:center;color:var(--ink);
+         font-family:'Gochi Hand','Bradley Hand','Segoe Print',cursive;line-height:1.12;
+         font-size:clamp(14px,var(--fs,10vh),64px);letter-spacing:.01em;transform:translateY(6%)}
+  .dots{position:absolute;bottom:8%;left:0;right:0;display:flex;justify-content:center;gap:6%}
+  .dots i{width:3.2%;aspect-ratio:1;border-radius:50%;background:var(--dot);opacity:.75}
+  .dots i.a{background:var(--accent);opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card" id="card"><div class="shape"></div><div class="motif" id="motif"></div><p class="quote" id="quote"></p><div class="dots"><i></i><i></i><i></i></div></div></div>
+<script>
+(function(){
+  var Q=[
+    "one soft step at a time","slow mornings, big dreams","you are allowed to rest","bloom at your own pace",
+    "small steps still count","be gentle with yourself","make today feel like home","your pace is perfect",
+    "softness is strength","choose calm today","little by little","grow quietly, glow loudly",
+    "rest is part of the plan","you're doing better than you think","keep it simple, keep it sweet","peace over pressure",
+    "good things take time","romanticize the little things","breathe in, slow down","be the energy you want",
+    "progress, not perfection","your future self says thank you","today is a fresh page","trust your timing",
+    "soft heart, strong mind","make room for joy","one cozy day at a time","do it gently, but do it",
+    "you are your own home","let it be easy","gratitude looks good on you","stay soft, stay focused",
+    "it's okay to start small","quiet effort, real results","create a life you love","show up for yourself",
+    "find beauty in ordinary days","less rush, more rhythm","your glow is coming","kindness starts with you",
+    "breathe. you've got this","let your light be soft","dreams love consistency","protect your peace",
+    "you deserve good days","calm is a superpower","take the scenic route","everything in its season"
+  ];
+  var P=[ // card, arch, accent, ink, dot
+    ["#EBD3CA","#F3E1DA","#C98A7E","#3B2F2B","#FFFFFF"], // blush
+    ["#DCE5DA","#EBF1E8","#8FA88F","#33402F","#FFFFFF"], // sage
+    ["#EADFCF","#F5EDE2","#C2A27A","#3E3427","#FFFFFF"], // sand
+    ["#E4DBE9","#F0EAF3","#A893B8","#3A3142","#FFFFFF"], // lilac
+    ["#F1E2DC","#F9EFEA","#D99A9A","#45332F","#FFFFFF"], // rose cream
+    ["#E6E0D8","#F2EDE7","#A8968A","#3A322D","#FFFFFF"]  // latte
+  ];
+  var M={
+    dot:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>',
+    sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>',
+    moon:'<svg viewBox="0 0 24 24"><path d="M15.5 2.5a9.5 9.5 0 1 0 6 16.9A8 8 0 0 1 15.5 2.5z" fill="currentColor"/></svg>',
+    sparkle:'<svg viewBox="0 0 24 24"><path d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z" fill="currentColor"/></svg>',
+    flower:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5.5" r="4"/><circle cx="18.2" cy="10" r="4"/><circle cx="15.8" cy="17.3" r="4"/><circle cx="8.2" cy="17.3" r="4"/><circle cx="5.8" cy="10" r="4"/><circle cx="12" cy="12" r="3" fill="#fff" opacity=".55"/></svg>',
+    heart:'<svg viewBox="0 0 24 24"><path d="M12 21s-8.5-5.3-8.5-11.2A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 3.2C20.5 15.7 12 21 12 21z" fill="currentColor"/></svg>',
+    wave:'<svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2 5c4-4 8 4 12 0s8 4 12 0M2 12c4-4 8 4 12 0s8 4 12 0"/></svg>'
+  };
+  var MK=Object.keys(M), S=['arch','oval','arch','tall'];
+  var q=new URLSearchParams(location.search);
+  var bg=(q.get('bg')||'').replace(/[^0-9a-fA-F]/g,'');
+  if(bg.length===6||bg.length===3) document.documentElement.style.setProperty('--bg','#'+bg);
+  var every=(q.get('every')||'day').toLowerCase();
+  var card=document.getElementById('card'), el=document.getElementById('quote'), mo=document.getElementById('motif'), cur=null;
+  function slot(){
+    var d=new Date();
+    var day=Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
+    if(every==='hour') return day*24+d.getHours();
+    if(every==='visit') return Math.floor(Math.random()*1e6);
+    if(every==='week') return Math.floor((day+3)/7);
+    return day;
+  }
+  function fit(){
+    var h=card.clientHeight, len=el.textContent.length;
+    var k = len<18?0.115 : len<26?0.098 : len<34?0.085 : 0.074;
+    el.style.setProperty('--fs', Math.round(h*k)+'px');
+  }
+  function render(force){
+    var n=q.get('n')!==null?parseInt(q.get('n'),10)||0:slot(); if(n===cur&&!force) return; cur=n;
+    var i=((n%Q.length)+Q.length)%Q.length;
+    var p=P[(n*5+1)%P.length], m=MK[(n*3)%MK.length], s=S[(n%S.length+S.length)%S.length];
+    if(q.get('palette')){var pi=parseInt(q.get('palette'),10); if(pi>=1&&pi<=P.length) p=P[pi-1];}
+    var r=document.documentElement.style;
+    r.setProperty('--card',p[0]);r.setProperty('--arch',p[1]);r.setProperty('--accent',p[2]);r.setProperty('--ink',p[3]);r.setProperty('--dot',p[4]);
+    card.className='card '+s; mo.innerHTML=M[m];
+    el.textContent=Q[i];
+    var dots=card.querySelectorAll('.dots i'); for(var j=0;j<3;j++) dots[j].className=(j===n%3?'a':'');
+    fit(); requestAnimationFrame(function(){card.classList.add('on')});
+  }
+  render(true);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit);
+  window.addEventListener('resize',fit);
+  if(every!=='visit') setInterval(render,5*60*1000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)render()});
+})();
+</script>
+</body>
+</html>
