@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>This Month's Vision · CalidPlanner</title>
+<style>
+  :root{--card:#F4EEEE}
+  html,body{margin:0;height:100%;background:var(--card);overflow:hidden}
+  .wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:4px;box-sizing:border-box}
+  img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;opacity:0;transition:opacity .5s ease}
+  img.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap"><img id="card" alt=""></div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search);
+  var bg=(q.get('bg')||'').replace(/[^0-9a-fA-F]/g,'');
+  if(bg.length===6||bg.length===3) document.documentElement.style.setProperty('--card','#'+bg);
+  var names=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var img=document.getElementById('card'), shown=-1;
+  function show(){
+    var m=parseInt(q.get('m'),10);
+    if(!(m>=1&&m<=12)) m=new Date().getMonth()+1;
+    if(m===shown) return; shown=m;
+    img.classList.remove('on');
+    img.alt=names[m-1]+' vision card';
+    img.onload=function(){img.classList.add('on')};
+    img.src='months/'+(m<10?'0':'')+m+'.webp';
+  }
+  show();
+  // keep it right if the page stays open past midnight on the 1st
+  setInterval(show,60*60*1000);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)show()});
+})();
+</script>
+</body>
+</html>
